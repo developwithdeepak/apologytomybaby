@@ -76,11 +76,13 @@
       </div>
 
       <div class="letter" id="letterBox" aria-hidden="true">
-        <h2>Hey meri jaan,</h2>
+        <h2>Hey babyy,</h2>
         <p>I've been thinking a lot about what happened. I lost my temper and said things I shouldn't have — and because of that, I hurt you.</p>
         <p>This page is my little promise: I am truly sorry. I will listen more, be patient, tera pov bhi smjhunga . You are the most important person in my life.</p>
         <p>Please forgive me. I miss you baby, imiss talking to you, and everything that makes us 'us'.</p>
         <p style="margin-top:12px;font-weight:700;color:var(--pink)">Always yours,<br><em>— Dip Dip</em></p>
+        <button id="forgiveBtn" class="btn ghost" style="margin-top:12px;">Forgive Me ❤️</button>
+
       </div>
     </div>
   </div>
@@ -129,8 +131,24 @@
       startConfetti();
       herName.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:900,iterations:1});
     }
+    const forgiveBtn = document.getElementById('forgiveBtn');
+
+forgiveBtn.addEventListener('click', () => {
+  // Cute pop effect
+  const rect = forgiveBtn.getBoundingClientRect();
+  spawnPop(rect.left + rect.width/2, rect.top + rect.height/2, 12);
+  
+  // Confetti burst
+  startConfetti();
+  
+  // Sweet alert or text change
+  forgiveBtn.textContent = "Yay! ❤️ Thank you!";
+  forgiveBtn.disabled = true;
+});
+
 
     window.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='o'){openIfPasswordCorrect();}});
   </script>
 </body>
 </html>
+
