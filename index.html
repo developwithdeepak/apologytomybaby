@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>I'm Sorry ❤️ — lavuu baby</title>
+  <style>
+    :root{--bg1:#fff7fb;--pink:#ff6b81;--rose:#ff99b0;--muted:#6b6b6b}
+    *{box-sizing:border-box}
+    body{margin:0;font-family: 'Poppins', Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:linear-gradient(180deg,var(--bg1) 0%,#fff 60%);color:#333;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+
+    .stage{max-width:880px;width:100%;display:grid;grid-template-columns: 320px 1fr;gap:24px;align-items:center}
+    .card{background:rgba(255,255,255,0.85);backdrop-filter:blur(6px);border-radius:18px;padding:20px;box-shadow:0 12px 30px rgba(250,100,140,0.08)}
+
+    .left{display:flex;flex-direction:column;align-items:center;gap:14px}
+    .avatar{width:220px;height:220px;border-radius:50%;overflow:hidden;border:8px solid #fff;box-shadow:0 12px 30px rgba(0,0,0,0.12);transform:scale(0.9);transition:transform .6s ease}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .name{font-weight:700;color:var(--pink);font-size:20px}
+
+    .right{display:flex;flex-direction:column;gap:12px}
+    .big-title{font-size:22px;color:var(--pink);margin:0}
+    .intro{color:var(--muted);margin:0}
+
+    .open-area{display:flex;gap:10px;align-items:center;margin-top:8px}
+    .btn{background:var(--pink);color:white;padding:10px 14px;border-radius:12px;border:none;cursor:pointer;font-weight:700;box-shadow:0 8px 20px rgba(255,107,129,0.12);transition:transform .12s ease}
+    .btn:active{transform:scale(.98)}
+    .ghost{background:transparent;color:var(--pink);border:1px solid rgba(255,107,129,0.15)}
+
+    .letter{margin-top:12px;background:linear-gradient(180deg,#fff,#fff9fb);padding:18px;border-radius:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);max-height:420px;overflow:auto;opacity:0;transform:translateY(16px) scale(.98);transition: all .6s cubic-bezier(.2,.9,.3,1)}
+    .letter.show{opacity:1;transform:translateY(0) scale(1)}
+    .letter h2{margin:0 0 8px 0;color:#d63384}
+    .letter p{margin:8px 0;color:#333;line-height:1.6;font-size:1.05rem}
+
+    .overlay{position:fixed;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.45),rgba(0,0,0,0.35));display:flex;align-items:center;justify-content:center;z-index:60}
+    .modal{width:94%;max-width:420px;background:#fff;padding:20px;border-radius:14px;text-align:center;box-shadow:0 18px 60px rgba(0,0,0,0.35)}
+    .modal h3{margin:0 0 6px 0;color:var(--pink)}
+    .pass-input{width:100%;padding:10px;border-radius:10px;border:1px solid #eee;margin-top:12px}
+    .small{font-size:13px;color:#666;margin-top:8px}
+
+    .hearts{position:fixed;left:0;right:0;top:0;bottom:0;pointer-events:none;overflow:hidden;z-index:10}
+    .heart{position:absolute;font-size:20px;transform:translateY(-120px);animation:fall 6s linear infinite}
+    @keyframes fall{0%{transform:translateY(-10vh) scale(0.6);opacity:0}10%{opacity:1}100%{transform:translateY(110vh) scale(1.1);opacity:0}}
+
+    .pop-heart{position:absolute;transform-origin:center center;animation:pop .8s forwards}
+    @keyframes pop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.25);opacity:1}100%{transform:scale(1);opacity:0}}
+
+    #confetti{position:fixed;inset:0;z-index:50;pointer-events:none}
+
+    @media (max-width:900px){.stage{grid-template-columns:1fr;}.avatar{width:160px;height:160px}.left{order:2}.right{order:1}}
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+  <canvas id="confetti"></canvas>
+
+  <audio id="bgMusic" src="bg-music.mp3" loop></audio>
+
+  <div class="stage">
+    <div class="card left center">
+      <div class="avatar" id="avatar"><img src="media/photo1.jpg" alt="Her Photo"></div>
+      <div class="name" id="herName">Lavuuu</div>
+      <div class="small">Open the letter to see how sorry I am ❤️</div>
+    </div>
+
+    <div class="card right">
+      <h3 class="big-title">A special surprise for <span id="herNameInline">Lavuuu</span></h3>
+      <p class="intro">I made this little page just for you. Click the button below and read my full apology.</p>
+
+      <div class="open-area">
+        <input id="passwordInput" class="pass-input" type="password" placeholder="Enter password to open" />
+        <button id="openBtn" class="btn">Open ❤️</button>
+      </div>
+
+      <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+        <button id="revealBtn" class="btn ghost">Tap to Reveal (after correct password)</button>
+      </div>
+
+      <div class="letter" id="letterBox" aria-hidden="true">
+        <h2>Hey meri jaan,</h2>
+        <p>I've been thinking a lot about what happened. I lost my temper and said things I shouldn't have — and because of that, I hurt you.</p>
+        <p>This page is my little promise: I am truly sorry. I will listen more, be patient, tera pov bhi smjhunga . You are the most important person in my life.</p>
+        <p>Please forgive me. I miss you baby, imiss talking to you, and everything that makes us 'us'.</p>
+        <p style="margin-top:12px;font-weight:700;color:var(--pink)">Always yours,<br><em>— Dip Dip</em></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CORRECT_PASSWORD = 'lavubaby';
+    const openBtn = document.getElementById('openBtn');
+    const revealBtn = document.getElementById('revealBtn');
+    const passInput = document.getElementById('passwordInput');
+    const letterBox = document.getElementById('letterBox');
+    const avatar = document.getElementById('avatar');
+    const heartsArea = document.getElementById('hearts');
+    const herName = document.getElementById('herName');
+    const herNameInline = document.getElementById('herNameInline');
+    const bgMusic = document.getElementById('bgMusic');
+
+    function spawnPop(x,y,count=6){for(let i=0;i<count;i++){const el=document.createElement('div');el.className='pop-heart';el.style.left=(x+(Math.random()*60-30))+'px';el.style.top=(y+(Math.random()*60-30))+'px';el.style.fontSize=(18+Math.random()*18)+'px';el.textContent='💖';el.style.zIndex=70;document.body.appendChild(el);setTimeout(()=>el.remove(),900);}}
+
+    const confettiCanvas = document.getElementById('confetti');
+    const ctx = confettiCanvas.getContext('2d');
+    function resizeCanvas(){ confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
+    let confs=[];
+    function startConfetti(){confs=[];const colors=['#ff6b81','#ffd166','#ffb3c6','#ff9aa2','#c6f6d5'];for(let i=0;i<180;i++){confs.push({x:Math.random()*confettiCanvas.width,y:-Math.random()*confettiCanvas.height,r:Math.random()*7+3,vx:(Math.random()-0.5)*4,vy:Math.random()*3+2,color:colors[Math.floor(Math.random()*colors.length)],rot:Math.random()*360});}requestAnimationFrame(loop=function(){ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);for(const p of confs){p.x+=p.vx;p.y+=p.vy;p.vy+=0.03;p.rot+=3;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6);ctx.restore();}confs=confs.filter(p=>p.y<confettiCanvas.height+50);if(confs.length>0)requestAnimationFrame(loop);else ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);});}
+
+    setInterval(()=>{const h=document.createElement('div');h.className='heart';h.style.left=Math.random()*100+'%';h.style.fontSize=(12+Math.random()*20)+'px';heartsArea.appendChild(h);setTimeout(()=>h.remove(),6500);},600);
+
+    function openIfPasswordCorrect(){
+      const val = passInput.value.trim();
+      if(!val){alert('Enter password please ❤️');passInput.focus();return;}
+      if(val===CORRECT_PASSWORD){
+        reveal();
+        bgMusic.play();
+      } else {alert('Wrong password :) Try again');passInput.value='';passInput.focus();}
+    }
+
+    openBtn.addEventListener('click', openIfPasswordCorrect);
+    passInput.addEventListener('keydown',e=>{if(e.key==='Enter') openIfPasswordCorrect();});
+    revealBtn.addEventListener('click',()=>{alert('Enter the password first ❤️');});
+
+    function reveal(){
+      letterBox.classList.add('show'); letterBox.setAttribute('aria-hidden','false');
+      avatar.style.transform='scale(1.06)'; setTimeout(()=>avatar.style.transform='scale(1)',700);
+      const rect=avatar.getBoundingClientRect(); spawnPop(rect.left+rect.width/2,rect.top+rect.height/2,10);
+      startConfetti();
+      herName.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:900,iterations:1});
+    }
+
+    window.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='o'){openIfPasswordCorrect();}});
+  </script>
+</body>
+</html>
